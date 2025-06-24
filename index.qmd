@@ -1,0 +1,18 @@
+---
+title: ""
+format: html
+---
+
+## Challenge and opportunity
+
+Land managers and researchers rely on polygons to-among other things-stratify the landscape for assessment and summarization of key attributes.  Some examples include:
+
+![Provisional LTA map](images/conus_ltas.jpg){style="float:right; margin-left: 25px;" fig-alt="\"Provisional LTAs." fig-align="right" width="450" }
+
+1.	Watershed boundaries (area of land that drains all the streams and rainfall to a common outlet) are used by hydrologists to help understand and manage waterflows and model potential pollution impacts.  Land managers in general often use watersheds boundaries for cumulative impact assessments and to summarize land use. 
+2.	Hexagons are often (e.g. than rectangles) used in research and cartography as they are less prone to distortion, nearest neighbor mapping is simplified as the centeroid of all six surrounding cells has the same distance and they can be less likely to highlight linear features.  
+3.	Ecoregions are geographic areas defined by similar flora, fauna and/or ecosystems.  They often have characteristic soils, climate and landforms.  They are typically large (>10k sqm), but can vary and size
+
+The USFS has invested heavily in development of a hierarchical Ecological Classification System (ECS) that has units defined by biotic and environmental factors, and units ranging in size from Land Type Phases (10-100s of acres) to Domains (up to millions of square miles).   Mapping of the larger polygons has been completed nationally, but mapping of the smaller units is underway.
+
+The Terrestrial Ecological Unit Inventory is the USFS approach for mapping the smaller units of the ecological hierarchy in a standardized way. The first incomplete level of the hierarchy is the Land Type Associations (LTAs), and a recent USFS effort has mapped just over 62k LTA boundaries as of June 2025. LTA mapping has been driven by the latest ecological knowledge and eCognition software.  The completion of these LTA boundaries comes with opportunities to assess their robustness and utility.  

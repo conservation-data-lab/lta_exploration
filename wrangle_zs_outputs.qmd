@@ -1,0 +1,170 @@
+---
+title: "Explore and Clean Zonal Stats Output"
+author: "Randy Swaty"
+format: html
+---
+
+## GIS work
+
+For many of the analyses, the Zonal Histogram tool in QGIS was used. 
+
+##  Set up
+
+Below we will load in libraries (installing if needed) and read in input datasets.
+
+```{r}
+
+# Install and load packages ----
+
+# install.packages("RColorBrewer")
+# install.packages("sf")
+# install.packages("tidyverse")
+
+library(RColorBrewer)
+library(sf)
+library(tidyverse)
+
+# Read in input (raw) data ----
+# zonal stats output from QGIS, BpSs per LTA for Ouachita NF
+onf_ltas_bps <- st_read("inputs/onf_ltas_bps.gpkg", quiet = TRUE)
+
+
+# Read in additional data (e.g. attributes) ----
+
+bps_attributes <- read_csv('inputs/LF20_BPS_220.csv') |>
+  # remove unwanted columns by location-easier than spelling them out by name, but assumes they don't move!  Check output to make sure.
+  select(-c(2,3, 11:20))
+  
+
+```
+
+
+
+## Initial exploration and wrangling of BpS-LTA data
+
+```{r}
+
+
+# Make dataframe of column names for exploration ----
+
+# get list
+column_names <- colnames(onf_ltas_bps)
+
+# make dataframe-easier to look at
+column_names_df <- data.frame(Column_Names = column_names)
+
+# whoa 171 columns!  We only need the ones that indicate the LTA and BPS, plus the geometry.  Luckily we can do this easily!
+
+# Clean and pivot data
+clean_onf_ltas_bps <- onf_ltas_bps |>
+  # keep the UID, geom and columns that start with "BPS_"
+  select(UID, geom, starts_with("BPS_"))
+
+# looks good, but is wide!
+
+clean_onf_ltas_bps_long <- clean_onf_ltas_bps |>
+  # Pivot columns starting with "BPS_" into long format
+  pivot_longer(cols = starts_with("BPS_"), names_to = "bps_value", values_to = "count") |>
+  # Remove the "BPS_" prefix from the bps_value column
+  mutate(bps_value = as.numeric(str_remove(bps_value, "^BPS_"))) |>
+  # Reorder columns to have UID, count, bps_value, and geom
+  select(UID, count, bps_value, geom)
+
+# yay!  One more thing, we want BPS names and other information
+
+# Join in BpS attributes
+
+final_onf_lta_bps <- clean_onf_ltas_bps_long |>
+  # join in attributes, noting that the datasets have different names for the joining columns
+  left_join(bps_attributes, by = c("bps_value" = "VALUE")) |>
+  # move the geom column to the far right, makes it all easier to read
+  relocate(geom, .after = last_col())
+
+
+```
+
+
+# Make a map of the majority BpS per LTA for fun
+
+
+```{r}
+#| fig-width: 12
+#| fig-height: 10
+#| out-width: "100%"
+
+
+# Convert the data to an sf object using the 'geom' field
+data_sf <- st_as_sf(final_onf_lta_bps, wkt = "geom")
+
+
+# Aggregate the data to find the majority BPS_NAME by count per UID
+majority_bps <- data_sf %>%
+  group_by(UID) %>%
+  summarize(BPS_NAME_majority = BPS_NAME[which.max(count)])
+
+# Drop geometry from the aggregated data
+majority_bps <- st_drop_geometry(majority_bps)
+
+# Merge the aggregated data with the original spatial data using left_join
+merged_data <- data_sf %>%
+  left_join(majority_bps, by = "UID")
+
+# Select only the necessary columns to avoid duplication
+merged_data <- merged_data %>%
+  select(UID, BPS_NAME_majority, geom)
+
+
+
+# Define a color palette
+bps_names <- unique(merged_data$BPS_NAME_majority)
+colors <- brewer.pal(length(bps_names) - 1, "Set3")
+colors <- c("Open Water" = "blue", setNames(colors, bps_names[bps_names != "Open Water"]))
+
+# Plot the map with polygons colored by the majority BPS_NAME
+bps_map <- 
+
+# Plot the map with polygons colored by the majority BPS_NAME
+ggplot(data = merged_data) +
+  geom_sf(aes(fill = BPS_NAME_majority)) +
+  scale_fill_manual(values = colors) +
+  theme(panel.background = element_rect(fill = "white"),
+     panel.border = element_rect(fill = NA)) +
+  labs(title = "Majority BPS_NAME by UID Polygon",
+    fill = "BPS_NAME") +
+  theme(
+    legend.position = "bottom", # Move legend to the bottom
+    legend.title = element_blank(), # Adjust legend title size
+    legend.text = element_text(size = 8), # Adjust legend text size
+    legend.key.size = unit(0.5, "cm"), # Adjust legend key size
+    plot.title = element_text(size = 14, face = "bold"), # Adjust title size
+    #plot.margin = margin(10, 10, 10, 10), # Adjust plot margins
+    legend.box = "horizontal" # Arrange legend items horizontally
+  ) +
+  guides(fill = guide_legend(ncol = 3)) # Arrange legend items in three columns
+
+
+
+
+
+bps_map
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

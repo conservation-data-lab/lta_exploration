@@ -1,0 +1,33 @@
+project:
+  type: website
+  output-dir: docs
+
+  preview: 
+    watch-inputs: false
+
+website:
+  title: "Exploring Ecosystem Variability Across Different Stratifications"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: wrangle_zs_outputs.qmd
+        text: Wrangle ZS outputs
+      
+
+
+format:
+  html:
+    theme: 
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+    linksource:   "#00008B"# Dark blue color
+
+
+editor: source
+
+
+
+
