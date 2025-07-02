@@ -17,16 +17,24 @@ Below we will load in libraries (installing if needed) and read in input dataset
 # Install and load packages ----
 
 # install.packages("RColorBrewer")
+# install.packages("scales")
 # install.packages("sf")
 # install.packages("tidyverse")
 
 library(RColorBrewer)
+library(scales)
 library(sf)
 library(tidyverse)
 
 # Read in input (raw) data ----
 # zonal stats output from QGIS, BpSs per LTA for Ouachita NF
 onf_ltas_bps <- st_read("inputs/onf_ltas_bps.gpkg", quiet = TRUE)
+
+# zonal stats output from QGIS, BpSs per HUC 12 Watershed for the Flathead NF
+flathead_huc12_bps <- st_read("inputs/flathead_huc12s_bps.gpkg")
+
+# zonal stats output from QGIS, BpSs per ~40k acre hexagons for the Flathead NF
+flathead_hexs_bps <- st_read("inputs/flathead_hexs_bps.gpkg")
 
 
 # Read in additional data (e.g. attributes) ----
@@ -40,10 +48,13 @@ bps_attributes <- read_csv('inputs/LF20_BPS_220.csv') |>
 
 
 
-## Initial exploration and wrangling of BpS-LTA data
+## Initial exploration and wrangling of BpS-LTA data for the Ouachita National Forest
 
 ```{r}
 
+
+# quick plot for fun
+plot(onf_ltas_bps["UID"], key.pos = NULL)
 
 # Make dataframe of column names for exploration ----
 
@@ -84,7 +95,7 @@ final_onf_lta_bps <- clean_onf_ltas_bps_long |>
 ```
 
 
-# Make a map of the majority BpS per LTA for fun
+### Make a map of the majority BpS per LTA for fun
 
 
 ```{r}
@@ -153,13 +164,141 @@ bps_map
 ```
 
 
+## Initial exploration and wrangling of BpS-HUC 12 Watershed data for the Flathead National Forest
+
+HUC (Hydrological Unit) 12 data obtained from https://apps.nationalmap.gov/downloader/#/, specifically by selecting Boundaries -> Hydrography (3D Hydrography Program Products and Services) -> Watershed Boundary Dataset (WBD) after drawing a polygon of the area of interest.
+
+These watershed boundaries are ~ 10k - 40K acres which roughly matches the LTAs which range from ~2k - 120k acres with a mean of ~10k acres for the Flathead NF.
+
+```{r}
+
+plot(flathead_huc12_bps["areaacres"], key.pos = NULL)
+
+
+# get list
+column_names <- colnames(flathead_huc12_bps)
+
+# make dataframe-easier to look at
+column_names_df <- data.frame(Column_Names = column_names)
+
+# Clean and pivot data
+clean_flathead_huc12_bps <- flathead_huc12_bps |>
+  # keep the UID, geom and columns that start with "BPS_"
+  select(huc12, name, geom, starts_with("BPS_"))
+
+
+# looks good, but is wide!
+
+clean_flathead_huc12_bps_long <- clean_flathead_huc12_bps |>
+  # Pivot columns starting with "BPS_" into long format
+  pivot_longer(cols = starts_with("BPS_"), names_to = "bps_value", values_to = "count") |>
+  # Remove the "BPS_" prefix from the bps_value column
+  mutate(bps_value = as.numeric(str_remove(bps_value, "^BPS_"))) |>
+  # Reorder columns to have UID, count, bps_value, and geom
+  select(huc12, name, count, bps_value, geom)
+
+# yay!  One more thing, we want BPS names and other information
+
+# Join in BpS attributes, drop geometry to write to .csv
+
+final_flathead_huc12_bps <- clean_flathead_huc12_bps_long |>
+  # drop geometry for now
+  st_drop_geometry() |>
+  # join in attributes, noting that the datasets have different names for the joining columns
+  left_join(bps_attributes, by = c("bps_value" = "VALUE")) 
+
+
+write.csv(final_flathead_huc12_bps, file = "outputs/flathead_huc12_bps.csv")
+```
+
+
+### Make a chart of the BpSs within the watersheds for fun
+
+First clean up the data and add an acres field
+
+```{r}
+bps_hexs <- final_flathead_huc12_bps |>
+  st_drop_geometry()|>
+  group_by(BPS_NAME) |>
+  summarize(bps_acres = (sum(count*0.222))) |>
+  filter(!BPS_NAME %in% c(
+    "Barren-Rock/Sand/Clay" ,
+    "Open Water",
+    "Perennial Ice/Snow")) |>
+  arrange(desc(bps_acres)) |>
+  slice_max(bps_acres, n = 10)
+  
+```
+
+
+Then make the chart of acres per BpS summarized for all watersheds that intersect/overlay the Flathead National Forest.
+
+```{r fig.width=12, fig.height=10}
 
 
 
 
+# plot
+bps_chart <- 
+  ggplot(data = bps_hexs, aes(x = BPS_NAME, y = bps_acres)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "Top 10 Biophysical Settings",
+    subtitle = "",
+    caption = "Data from landfire.gov.",
+    x = "",
+    y = "Acres") +
+  scale_x_discrete(limits = rev(bps_hexs$BPS_NAME),
+                   labels = function(x) str_wrap(x, width = 18)) +
+  coord_flip() +
+  theme_bw(base_size = 14) +
+  scale_y_continuous(labels = scales::comma_format())
 
 
+bps_chart
+```
 
+
+## Initial exploration and wrangling of BpS-Hexagon data
+
+The hexagons I made had a horizontal and vertical spacing of 14,000M which made them ~ 40k acres.
+
+```{r}
+
+# quick map for fun
+plot(flathead_hexs_bps["id"], key.pos = NULL)
+
+
+# Clean and pivot data
+clean_flathead_hexs_bps <- flathead_hexs_bps |>
+  # keep the UID, geom and columns that start with "BPS_"
+  select(id, geom, starts_with("BPS_"))
+
+
+# looks good, but is wide!
+
+clean_flathead_hexs_bps_long <- clean_flathead_hexs_bps |>
+  # Pivot columns starting with "BPS_" into long format
+  pivot_longer(cols = starts_with("BPS_"), names_to = "bps_value", values_to = "count") |>
+  # Remove the "BPS_" prefix from the bps_value column
+  mutate(bps_value = as.numeric(str_remove(bps_value, "^BPS_"))) |>
+  # Reorder columns to have UID, count, bps_value, and geom
+  select(id, count, bps_value, geom)
+
+# yay!  One more thing, we want BPS names and other information
+
+# Join in BpS attributes
+
+final_flathead_hexs_bps <- clean_flathead_hexs_bps_long |>
+  # drop geometry field to reduce size for saving as .csv
+  st_drop_geometry() |>
+  # join in attributes, noting that the datasets have different names for the joining columns
+  left_join(bps_attributes, by = c("bps_value" = "VALUE")) 
+
+write.csv(final_flathead_hexs_bps, file = "outputs/final_flathead_hexs_bps.csv")
+
+
+```
 
 
 
