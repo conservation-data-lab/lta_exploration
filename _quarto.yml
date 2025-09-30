@@ -8,11 +8,16 @@ project:
 website:
   title: "Exploring Ecosystem Variability Across Different Stratifications"
   navbar:
+    search: TRUE
+    pinned: true
     left:
       - href: index.qmd
         text: Home
-      - href: wrangle_zs_outputs.qmd
-        text: Wrangle ZS outputs
+      - href: polygons.qmd
+        text: Polygons
+      - href: results.qmd
+        text: Results
+
       
 
 

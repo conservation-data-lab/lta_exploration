@@ -1,0 +1,23 @@
+"VALUE","Freq","BPS_CODE","ZONE","BPS_MODEL","BPS_NAME","GROUPVEG","FRI_REPLAC","FRI_MIXED","FRI_SURFAC","FRI_ALLFIR","PRC_REPLAC","PRC_MIXED","PRC_SURFAC","FRG_NEW","R","G","B","RED","GREEN","BLUE","ACRES","REL_PERCENT"
+2160,4503224,15070,44,"15070_44","Ozark-Ouachita Shortleaf Pine-Bluestem Woodland","Hardwood-Conifer",100,1223,2,2,2,1,97,"I-A",68,137,112,0.266667,0.537255,0.439216,1001493,24.6
+2132,3775789,13040,44,"13040_32_43_44_49","Ozark-Ouachita Dry-Mesic Oak Forest","Hardwood",188,66,15,11,6,17,77,"I-B",115,115,0,0.45098,0.45098,0,839715,20.7
+2141,3359477,13670,44,"13670_32_44","Ozark-Ouachita Shortleaf Pine-Oak Forest and Woodland","Conifer",347,92,5,5,1,5,94,"I-A",196,164,100,0.768627,0.643137,0.392157,747130,18.4
+2140,2389120,13640,44,"13640_32_44_49","Ozark-Ouachita Dry Oak Woodland","Hardwood",38,89,6,5,13,5,82,"I-A",97,69,0,0.380392,0.270588,0,531327,13.1
+2153,919145,14712,44,"14712_44","Central Interior and Appalachian Floodplain Systems-Large Floodplains","Riparian",142,-9999,100,59,41,-9999,59,"III-A",48,237,56,0.188235,0.929412,0.219608,204413,5
+2142,698083,13710,44,"13710_44","West Gulf Coastal Plain Pine-Hardwood Forest","Hardwood-Conifer",121,52,5,4,4,9,87,"I-A",100,168,0,0.392157,0.658824,0,155250,3.8
+2139,608766,13340,44,"13340_32_43_44","Ozark-Ouachita Mesic Hardwood Forest","Hardwood",316,110,25,19,6,18,76,"I-C",0,135,74,0,0.529412,0.290196,135386,3.3
+2155,511183,14730,44,"14730_32_37_44","Gulf and Atlantic Coastal Plain Floodplain Systems","Riparian",393,257,49,37,10,15,75,"III-A",102,119,205,0.4,0.466667,0.803922,113684,2.8
+11,378344,11,0,"0","Open Water","Open Water",-9999,-9999,-9999,-9999,-9999,-9999,-9999,"-9999",0,0,255,0,0,1,84142,2.1
+2147,270651,14152,44,"14152_44","Arkansas Valley Prairie and Woodland-Woodland","Grassland",96,14,2,2,3,14,83,"I-A",204,138,179,0.8,0.541176,0.701961,60191,1.5
+2146,231370,14151,44,"14151_44","Arkansas Valley Prairie and Woodland-Prairie","Grassland",2,344,12,2,82,1,17,"II-A",255,120,187,1,0.470588,0.733333,51455,1.3
+2156,150387,14740,44,"14740_32_37_44_45_98","Gulf and Atlantic Coastal Plain Small Stream Riparian Systems","Riparian",431,129,50,33,8,26,66,"I-C",171,185,235,0.670588,0.72549,0.921569,33445,0.8
+2143,130649,13780,44,"13780_37_44","West Gulf Coastal Plain Sandhill Oak and Shortleaf Pine Forest and Woodland","Hardwood-Conifer",159,390,5,5,3,1,96,"I-A",209,217,0,0.819608,0.85098,0,29056,0.7
+2150,82290,14280,44,"14280_37_44","West Gulf Coastal Plain Northern Calcareous Prairie","Grassland",1280,7,7,3,1,52,47,"I-A",255,0,110,1,0,0.431373,18301,0.5
+2159,98266,15060,44,"15060_37_44","West Gulf Coastal Plain Nonriverine Wet Hardwood Flatwoods","Hardwood",308,130,38,27,9,21,70,"I-C",38,115,0,0.14902,0.45098,0,21854,0.5
+2151,66155,14580,44,"14580_37_44_45_98","West Gulf Coastal Plain Pine-Hardwood Flatwoods","Hardwood-Conifer",179,104,5,5,3,4,93,"I-A",99,235,97,0.388235,0.921569,0.380392,14713,0.4
+2157,43280,14800,44,"14800_36_37_44","Gulf and Atlantic Coastal Plain Swamp Systems","Riparian",1020,-9999,685,410,40,-9999,60,"V-A",102,212,179,0.4,0.831373,0.701961,9625,0.2
+2136,23926,13120,44,"13120_44","Ouachita Montane Oak Forest","Hardwood",38,89,6,5,13,6,81,"I-A",0,38,115,0,0.14902,0.45098,5321,0.1
+2138,27068,13230,44,"13230_32_36_37_44_45_98","West Gulf Coastal Plain Mesic Hardwood Forest","Hardwood",271,90,23,17,7,19,74,"I-C",181,158,143,0.709804,0.619608,0.560784,6020,0.1
+31,208,31,0,"0","Barren-Rock/Sand/Clay","Barren-Rock/Sand/Clay",-9999,-9999,-9999,-9999,-9999,-9999,-9999,"-9999",191,191,191,0.74902,0.74902,0.74902,46,0
+1446,64,14730,37,"14730_32_37_44","Gulf and Atlantic Coastal Plain Floodplain Systems","Riparian",393,257,49,37,10,15,75,"III-A",102,119,205,0.4,0.466667,0.803922,14,0
+2158,3121,14930,44,"14930_41_42_44_50","Central Interior and Appalachian Shrub-Herbaceous Wetland Systems","Riparian",17,-9999,-9999,17,100,-9999,-9999,"II-C",240,150,20,0.941176,0.588235,0.078431,694,0
