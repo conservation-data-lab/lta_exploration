@@ -87,9 +87,9 @@ bps_summary$bps_name <- factor(bps_summary$bps_name, levels = str_wrap(bps_order
 
 # Custom colors
 unit_colors <- c(
-  "HEX" = "#e9d5ff",
-  "LTA" = "#d0e2d3",
-  "HUC12" = "#e1ecf3"
+  "HEX" = "#C59CD6",
+  "LTA" = "#ADD69C",
+  "HUC12" = "#9BDEDE"
 )
 
 
@@ -166,9 +166,9 @@ ggplot(bps_violin, aes(x = unit, y = unique_bps, fill = unit)) +
   ) +
   theme_minimal(base_size = 14) +
   scale_fill_manual(values = c(
-    "HEX" = "#e9d5ff",
-    "LTA" = "#d0e2d3",
-    "HUC12" = "#e1ecf3"
+      "HEX" = "#C59CD6",
+      "LTA" = "#ADD69C",
+      "HUC12" = "#9BDEDE"
   ))
 
 
@@ -209,9 +209,9 @@ ggplot(bps_matrix, aes(x = unit, y = shannon, fill = unit)) +
   ) +
   theme_minimal(base_size = 14) +
   scale_fill_manual(values = c(
-    "HEX" = "#e9d5ff",
-    "LTA" = "#d0e2d3",
-    "HUC12" = "#e1ecf3"
+      "HEX" = "#C59CD6",
+      "LTA" = "#ADD69C",
+      "HUC12" = "#9BDEDE"
   ))
 ```
 
@@ -322,9 +322,9 @@ evt_summary$evt_name <- factor(evt_summary$evt_name, levels = str_wrap(evt_order
 
 # Custom colors
 unit_colors <- c(
-  "HEX" = "#e9d5ff",
-  "LTA" = "#d0e2d3",
-  "HUC12" = "#e1ecf3"
+      "HEX" = "#C59CD6",
+      "LTA" = "#ADD69C",
+      "HUC12" = "#9BDEDE"
 )
 
 
@@ -402,9 +402,9 @@ ggplot(evt_violin, aes(x = unit, y = unique_evt, fill = unit)) +
   ) +
   theme_minimal(base_size = 14) +
   scale_fill_manual(values = c(
-    "HEX" = "#e9d5ff",
-    "LTA" = "#d0e2d3",
-    "HUC12" = "#e1ecf3"
+      "HEX" = "#C59CD6",
+      "LTA" = "#ADD69C",
+      "HUC12" = "#9BDEDE"
   ))
 
 
@@ -445,10 +445,9 @@ ggplot(evt_matrix, aes(x = unit, y = shannon, fill = unit)) +
   ) +
   theme_minimal(base_size = 14) +
   scale_fill_manual(values = c(
-    "HEX" = "#e9d5ff",
-    "LTA" = "#d0e2d3",
-    "HUC12" = "#e1ecf3"
-  ))
+      "HEX" = "#C59CD6",
+      "LTA" = "#ADD69C",
+      "HUC12" = "#9BDEDE"))
 ```
 
 
